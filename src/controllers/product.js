@@ -1,10 +1,10 @@
 const router = require('express').Router();
 
-const phoneService = require('../services/phone');
+const productService = require('../services/product');
 
 router.get('/', async (req, res) => {
     try {
-        const phones = await phoneService.getAll().lean();
+        const phones = await productService.getAll().lean();
         res.json(phones);
     } catch (err) {
         res.status(400).json({ msg: err });
@@ -14,7 +14,12 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
+        const { phoneId } = req.body;
+        const phone = await productService.getById(phoneId);
+
+        res.json(phone);
     } catch (err) {
+        res.status(400).json({ msg: err });
         console.log(err);
     }
 });
