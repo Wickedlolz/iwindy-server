@@ -2,6 +2,30 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { hash, compare } = require('bcrypt');
 
+exports.register = async function (email, password) {
+    const existing = await getUserByEmail(email);
+
+    if (existing) {
+        throw new Error('Email is taken');
+    }
+
+    const hashedPassword = await hash(
+        password,
+        Number(process.env.SALT_ROUNDS)
+    );
+
+    const user = new User({
+        email,
+        password: hashedPassword,
+    });
+
+    await user.save();
+
+    return user;
+};
+
+exports.login = async function (email, password) {};
+
 exports.createToken = function (user) {
     const tokenPromise = new Promise((resolve, reject) => {
         const payload = {
@@ -30,3 +54,8 @@ exports.validateToken = function (token) {
         return decoded;
     });
 };
+
+async function getUserByEmail(email) {
+    const user = await User.findOne({ email: new RegExp(`^${email}$`, 'i') });
+    return user;
+}

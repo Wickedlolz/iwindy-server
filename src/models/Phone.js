@@ -39,6 +39,7 @@ const phoneSchema = new Schema(
             ],
             default: 'other',
         },
+        comments: [{ type: ObjectId, ref: 'Comment' }],
     },
     { timestamps: true }
 );
