@@ -14,11 +14,61 @@ const phoneSchema = new Schema(
             type: String,
             required: true,
         },
-        description: {
+        released: {
             type: String,
             required: true,
         },
+        weigth: {
+            type: String,
+            required: true,
+        },
+        os: {
+            type: String,
+            required: true,
+        },
+        memory: {
+            type: String,
+            required: true,
+        },
+        displaySize: {
+            type: String,
+            required: true,
+        },
+        displayResolutions: {
+            type: String,
+            required: true,
+        },
+        cameraMP: {
+            type: Number,
+            required: true,
+        },
+        cameraVideo: {
+            type: String,
+            required: true,
+        },
+        ram: {
+            type: Number,
+            required: true,
+        },
+        chipset: {
+            type: String,
+            required: true,
+        },
+        batteryMAH: {
+            type: Number,
+            required: true,
+        },
+        batteryType: {
+            type: String,
+            enum: ['li-ion', 'li-po'],
+
+            default: 'li-ion',
+        },
         image: {
+            type: String,
+            required: true,
+        },
+        video: {
             type: String,
             required: true,
         },
