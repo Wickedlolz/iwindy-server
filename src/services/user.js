@@ -27,7 +27,7 @@ exports.register = async function (email, password) {
 exports.login = async function (email, password) {
     const user = await getUserByEmail(email);
 
-    if (user) {
+    if (!user) {
         throw new Error('Incorect email or password!');
     }
 
