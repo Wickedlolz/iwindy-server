@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const TokenBlacklist = require('../models/TokenBlacklist');
 const jwt = require('jsonwebtoken');
 const { hash, compare } = require('bcrypt');
 
@@ -40,6 +41,11 @@ exports.login = async function (email, password) {
     return user;
 };
 
+exports.logout = async function (token) {
+    const blacklisted = new TokenBlacklist({ token });
+    await blacklisted.save();
+};
+
 exports.createToken = function (user) {
     const tokenPromise = new Promise((resolve, reject) => {
         const payload = {
@@ -47,16 +53,26 @@ exports.createToken = function (user) {
             id: user._id,
         };
 
-        jwt.sign(payload, process.env.JWT_SECRET, (error, token) => {
-            if (error) {
-                return reject(error);
-            }
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            { expiresIn: '4h' },
+            (error, token) => {
+                if (error) {
+                    return reject(error);
+                }
 
-            resolve(token);
-        });
+                resolve(token);
+            }
+        );
     });
 
     return tokenPromise;
+};
+
+exports.checkIfBlacklisted = async function (token) {
+    const blacklistedTokens = await TokenBlacklist.findOne({ token });
+    return blacklistedTokens;
 };
 
 exports.validateToken = function (token) {
