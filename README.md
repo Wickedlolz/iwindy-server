@@ -1,2 +1,3 @@
-# phonecity-server
-PhoneCity REST API Server
+# iwindy-server
+
+iWindy REST API Server
