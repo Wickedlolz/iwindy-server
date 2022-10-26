@@ -27,14 +27,6 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const isBlacklisted = await userService.checkIfBlacklisted(
-            req.user.token
-        );
-
-        if (isBlacklisted) {
-            throw new Error('Token is blacklisted.');
-        }
-
         const user = await userService.login(email, password);
         const token = await userService.createToken(user);
 

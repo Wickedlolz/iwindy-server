@@ -1,11 +1,17 @@
-const { validateToken } = require('../services/user');
+const { validateToken, checkIfBlacklisted } = require('../services/user');
 
 module.exports = function () {
-    return (req, res, next) => {
+    return async (req, res, next) => {
         const token = req.headers['x-authorization'];
 
         if (token) {
             try {
+                const isBlacklisted = await checkIfBlacklisted(token);
+
+                if (isBlacklisted) {
+                    throw new Error('Invalid autorization token.');
+                }
+
                 const payload = validateToken(token);
 
                 req.user = {

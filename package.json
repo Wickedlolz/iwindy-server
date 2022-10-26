@@ -1,5 +1,5 @@
 {
-    "name": "phonecity-server",
+    "name": "iwindy-server",
     "version": "1.0.0",
     "description": "iTechCommerce - REST API",
     "main": "index.js",
