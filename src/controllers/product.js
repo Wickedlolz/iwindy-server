@@ -8,7 +8,6 @@ router.get('/', async (req, res) => {
         res.json(phones);
     } catch (err) {
         res.status(400).json({ msg: err });
-        console.log(err);
     }
 });
 
@@ -20,7 +19,6 @@ router.get('/:id', async (req, res) => {
         res.json(phone);
     } catch (err) {
         res.status(400).json({ msg: err });
-        console.log(err);
     }
 });
 
