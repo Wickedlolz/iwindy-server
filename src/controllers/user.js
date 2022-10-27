@@ -44,13 +44,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/logout', async (req, res) => {
-    try {
-        await userService.logout(req.user.token);
-        res.status(200).json({ message: 'Successfully logged out.' });
-    } catch (error) {
-        const errors = mapErrors(error);
-        res.status(400).json({ message: errors });
-    }
+    res.status(204).json({ messagE: 'Successfully logged out.' });
 });
 
 module.exports = router;
