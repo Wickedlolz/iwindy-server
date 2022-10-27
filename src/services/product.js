@@ -37,3 +37,33 @@ exports.create = async function (productData) {
     await phone.save();
     return phone;
 };
+
+exports.updateById = async function (productId, productData) {
+    const phone = await Phone.findById(productId);
+
+    phone.model = productData.model;
+    phone.price = productData.price;
+    phone.released = productData.released;
+    phone.weigth = productData.weigth;
+    phone.os = productData.os;
+    phone.memory = productData.memory;
+    phone.displaySize = productData.displaySize;
+    phone.displayResolutions = productData.displayResolutions;
+    phone.cameraMP = productData.cameraMP;
+    phone.cameraVideo = productData.cameraVideo;
+    phone.ram = productData.ram;
+    phone.chipset = productData.chipset;
+    phone.batteryMAH = productData.batteryMAH;
+    phone.batteryType = productData.batteryType;
+    phone.image = productData.image;
+    phone.video = productData.video;
+    phone.category = productData.category;
+
+    await phone.save();
+    return phone;
+};
+
+exports.deleteById = async function (phoneId) {
+    const deletedPhone = await Phone.findByIdAndRemove(phoneId);
+    return deletedPhone;
+};
