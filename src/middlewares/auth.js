@@ -10,7 +10,7 @@ module.exports = function () {
 
                 req.user = {
                     email: payload.email,
-                    id: payload._id,
+                    id: payload.id,
                     token,
                 };
             } catch (error) {
