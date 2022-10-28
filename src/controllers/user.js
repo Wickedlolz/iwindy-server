@@ -47,4 +47,17 @@ router.get('/logout', async (req, res) => {
     res.status(204).json({ messagE: 'Successfully logged out.' });
 });
 
+router.post('/add-to-cart', async (req, res) => {
+    const { productId } = req.body;
+    const userId = req.user.id;
+
+    try {
+        const item = await userService.addToCart(userId, productId);
+        res.status(201).json(item);
+    } catch (error) {
+        const errors = mapErrors(error);
+        res.status(400).json({ message: errors });
+    }
+});
+
 module.exports = router;

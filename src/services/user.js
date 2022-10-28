@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Cart = require('../models/Cart');
 const jwt = require('jsonwebtoken');
 const { hash, compare } = require('bcrypt');
 
@@ -38,6 +39,23 @@ exports.login = async function (email, password) {
     }
 
     return user;
+};
+
+exports.addToCart = async function (userId, productId) {
+    const user = await User.findById(userId);
+
+    if (!user) {
+        throw new Error('User not found!');
+    }
+
+    const item = new Cart({ userId, productId });
+    await item.save();
+
+    user.cart.push(item);
+
+    await user.save();
+
+    return item;
 };
 
 exports.createToken = function (user) {

@@ -93,8 +93,8 @@ router.delete('/:phoneId', async (req, res) => {
     const { phoneId } = req.params;
 
     try {
-        const deletedMovie = await productService.deleteById(phoneId);
-        res.json(deletedMovie);
+        const deletedProduct = await productService.deleteById(phoneId);
+        res.json(deletedProduct);
     } catch (error) {
         const errors = mapErrors(error);
         res.status(400).json({ message: errors });
