@@ -101,4 +101,16 @@ router.delete('/:phoneId', async (req, res) => {
     }
 });
 
+router.get('/category/:category', async (req, res) => {
+    const { category } = req.params;
+
+    try {
+        const products = await productService.getAllByCategory(category).lean();
+        res.json(products);
+    } catch (error) {
+        const errors = mapErrors(error);
+        res.status(400).json({ message: errors });
+    }
+});
+
 module.exports = router;

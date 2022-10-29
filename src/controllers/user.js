@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/logout', async (req, res) => {
-    res.status(204).json({ messagE: 'Successfully logged out.' });
+    res.status(200).json({ message: 'Successfully logged out.' });
 });
 
 router.post('/add-to-cart', async (req, res) => {

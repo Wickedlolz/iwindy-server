@@ -9,7 +9,10 @@ exports.getAllByCategory = function (category) {
 };
 
 exports.getById = async function (phoneId) {
-    return await Phone.findById(phoneId).lean();
+    return await Phone.findById(phoneId)
+        .populate('comments')
+        .populate('creator')
+        .lean();
 };
 
 exports.create = async function (productData) {
