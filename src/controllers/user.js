@@ -16,6 +16,7 @@ router.post('/register', async (req, res) => {
             accessToken: token,
         };
 
+        res.cookie('auth-cookie', result, { httpOnly: true });
         res.status(201).json(result);
     } catch (error) {
         const errors = mapErrors(error);
