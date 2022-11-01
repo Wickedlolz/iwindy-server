@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
             accessToken: token,
         };
 
-        res.cookie('auth-cookie', result, { httpOnly: true });
+        res.cookie(process.env.COOKIE_NAME, result, { httpOnly: true });
         res.status(201).json(result);
     } catch (error) {
         const errors = mapErrors(error);
@@ -37,6 +37,7 @@ router.post('/login', async (req, res) => {
             accessToken: token,
         };
 
+        res.cookie(process.env.COOKIE_NAME, result, { httpOnly: true });
         res.status(200).json(result);
     } catch (error) {
         const errors = mapErrors(error);
