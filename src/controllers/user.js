@@ -2,8 +2,9 @@ const router = require('express').Router();
 
 const userService = require('../services/user');
 const { mapErrors } = require('../utils/mapErrors');
+const { isAuth, isGuest } = require('../middlewares/guards');
 
-router.post('/register', async (req, res) => {
+router.post('/register', isGuest(), async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -24,7 +25,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', isGuest(), async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -45,11 +46,11 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.get('/logout', async (req, res) => {
+router.get('/logout', isAuth(), async (req, res) => {
     res.status(200).json({ message: 'Successfully logged out.' });
 });
 
-router.post('/add-to-cart', async (req, res) => {
+router.post('/add-to-cart', isAuth(), async (req, res) => {
     const { productId } = req.body;
     const userId = req.user.id;
 
