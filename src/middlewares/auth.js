@@ -6,7 +6,7 @@ module.exports = function () {
 
         if (token) {
             try {
-                const payload = validateToken(token.accessToken);
+                const payload = validateToken(token);
 
                 req.user = {
                     email: payload.email,

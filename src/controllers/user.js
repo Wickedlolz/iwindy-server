@@ -14,10 +14,9 @@ router.post('/register', isGuest(), async (req, res) => {
         const result = {
             email: user.email,
             id: user._id,
-            accessToken: token,
         };
 
-        res.cookie(process.env.COOKIE_NAME, result, { httpOnly: true });
+        res.cookie(process.env.COOKIE_NAME, token, { httpOnly: true });
         res.status(201).json(result);
     } catch (error) {
         const errors = mapErrors(error);
@@ -35,10 +34,11 @@ router.post('/login', isGuest(), async (req, res) => {
         const result = {
             email: user.email,
             id: user._id,
-            accessToken: token,
         };
 
-        res.cookie(process.env.COOKIE_NAME, result, { httpOnly: true });
+        res.cookie(process.env.COOKIE_NAME, token, {
+            httpOnly: true,
+        });
         res.status(200).json(result);
     } catch (error) {
         const errors = mapErrors(error);
@@ -47,7 +47,9 @@ router.post('/login', isGuest(), async (req, res) => {
 });
 
 router.get('/logout', isAuth(), async (req, res) => {
-    res.status(200).json({ message: 'Successfully logged out.' });
+    res.status(200)
+        .clearCookie(process.env.COOKIE_NAME)
+        .json({ message: 'Successfully logged out.' });
 });
 
 router.post('/add-to-cart', isAuth(), async (req, res) => {
