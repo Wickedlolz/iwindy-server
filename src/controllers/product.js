@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const productService = require('../services/product');
 const { mapErrors } = require('../utils/mapErrors');
+const { isAuth, isGuest } = require('../middlewares/guards');
 
 router.get('/', async (req, res) => {
     try {
@@ -13,7 +14,18 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.get('/latest', async (req, res) => {
+    try {
+        const latestProduct = await productService.getLatest();
+        res.json(latestProduct);
+    } catch (error) {
+        console.log(error);
+        const errors = mapErrors(error);
+        res.status(400).json({ message: errors });
+    }
+});
+
+router.post('/', isAuth(), async (req, res) => {
     const data = {
         model: req.body.model,
         price: req.body.price,
@@ -56,7 +68,7 @@ router.get('/:phoneId', async (req, res) => {
     }
 });
 
-router.put('/:phoneId', async (req, res) => {
+router.put('/:phoneId', isAuth(), async (req, res) => {
     const { phoneId } = req.params;
 
     try {
@@ -89,7 +101,7 @@ router.put('/:phoneId', async (req, res) => {
     }
 });
 
-router.delete('/:phoneId', async (req, res) => {
+router.delete('/:phoneId', isAuth(), async (req, res) => {
     const { phoneId } = req.params;
 
     try {

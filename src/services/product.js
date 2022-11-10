@@ -10,9 +10,13 @@ exports.getAllByCategory = function (category) {
 
 exports.getById = async function (phoneId) {
     return await Phone.findById(phoneId)
-        .populate('comments')
+        // .populate('comments')
         .populate('creator')
         .lean();
+};
+
+exports.getLatest = async function () {
+    return await Phone.find({}).sort('-createdAt').limit(1).lean();
 };
 
 exports.create = async function (productData) {
