@@ -25,12 +25,13 @@ router.get('/latest', async (req, res) => {
     }
 });
 
-router.post('/', isAuth(), async (req, res) => {
+// TODO: Add isAuth middleware
+router.post('/', async (req, res) => {
     const data = {
         model: req.body.model,
         price: req.body.price,
         released: req.body.released,
-        weigth: req.body.weigth,
+        weight: req.body.weight,
         os: req.body.os,
         memory: req.body.memory,
         displaySize: req.body.displaySize,
@@ -43,7 +44,7 @@ router.post('/', isAuth(), async (req, res) => {
         batteryType: req.body.batteryType,
         image: req.body.image,
         video: req.body.video,
-        creator: req.user.id,
+        creator: req.body.creator,
         category: req.body.category,
     };
 

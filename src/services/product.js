@@ -24,7 +24,7 @@ exports.create = async function (productData) {
         model: productData.model,
         price: productData.price,
         released: productData.released,
-        weigth: productData.weigth,
+        weight: productData.weight,
         os: productData.os,
         memory: productData.memory,
         displaySize: productData.displaySize,

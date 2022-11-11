@@ -3,7 +3,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const auth = require('../middlewares/auth');
 
-const whitelist = ['http://localhost:3000'];
+const whitelist = ['http://localhost:4200'];
 
 module.exports = (app) => {
     app.use(express.json());

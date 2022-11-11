@@ -18,7 +18,7 @@ const phoneSchema = new Schema(
             type: String,
             required: true,
         },
-        weigth: {
+        weight: {
             type: String,
             required: true,
         },

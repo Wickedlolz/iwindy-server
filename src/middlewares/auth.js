@@ -1,7 +1,7 @@
 const { validateToken } = require('../services/user');
 
 module.exports = function () {
-    return async (req, res, next) => {
+    return (req, res, next) => {
         const token = req.cookies[process.env.COOKIE_NAME] || undefined;
 
         if (token) {
