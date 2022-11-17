@@ -74,3 +74,32 @@ exports.deleteById = async function (phoneId) {
     const deletedPhone = await Phone.findByIdAndRemove(phoneId);
     return deletedPhone;
 };
+
+exports.like = async function (phoneId, userId) {
+    const phone = await Phone.findById(phoneId);
+
+    if (phone.likes.find((user) => user == userId)) {
+        throw new Error('User already like the phone!');
+    }
+
+    phone.likes.push(userId);
+    await phone.save();
+
+    return phone;
+};
+
+exports.dislike = async function (phoneId, userId) {
+    const phone = await Phone.findById(phoneId);
+
+    phone.likes.pull(userId);
+    await phone.save();
+    return phone;
+};
+
+exports.addComment = async function (phoneId, commentId) {
+    const phone = await Phone.findById(phoneId);
+    phone.comments.push(commentId);
+    await phone.save();
+
+    return phone;
+};

@@ -82,7 +82,7 @@ const phoneSchema = new Schema(
                 'samsung',
                 'apple',
                 'huawei',
-                'xiomi',
+                'xiaomi',
                 'motorola',
                 'nokia',
                 'other',
@@ -90,6 +90,7 @@ const phoneSchema = new Schema(
             default: 'other',
         },
         comments: [{ type: ObjectId, ref: 'Comment' }],
+        likes: [{ type: ObjectId, ref: 'User' }],
     },
     { timestamps: true }
 );

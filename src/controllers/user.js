@@ -37,7 +37,7 @@ router.post(
 
             const result = {
                 email: user.email,
-                id: user._id,
+                _id: user._id,
             };
 
             res.cookie(process.env.COOKIE_NAME, token, { httpOnly: true });
@@ -80,7 +80,7 @@ router.post(
 
             const result = {
                 email: user.email,
-                id: user._id,
+                _id: user._id,
             };
 
             res.cookie(process.env.COOKIE_NAME, token, {
