@@ -68,7 +68,7 @@ exports.createToken = function (user) {
         jwt.sign(
             payload,
             process.env.JWT_SECRET,
-            { expiresIn: '4h' },
+            { expiresIn: '2d' },
             (error, token) => {
                 if (error) {
                     return reject(error);

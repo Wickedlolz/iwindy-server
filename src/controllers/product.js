@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
         batteryType: req.body.batteryType,
         image: req.body.image,
         video: req.body.video,
-        creator: req.body.creator,
+        creator: req.user.id,
         category: req.body.category,
     };
 
@@ -120,6 +120,32 @@ router.get('/category/:category', async (req, res) => {
     try {
         const products = await productService.getAllByCategory(category).lean();
         res.json(products);
+    } catch (error) {
+        const errors = mapErrors(error);
+        res.status(400).json({ message: errors });
+    }
+});
+
+router.post('/like/:productId', async (req, res) => {
+    const { productId } = req.params;
+    const userId = req.user.id;
+
+    try {
+        const phone = await productService.like(productId, userId);
+        res.status(201).json(phone);
+    } catch (error) {
+        const errors = mapErrors(error);
+        res.status(400).json({ message: errors });
+    }
+});
+
+router.post('/dislike/:productId', async (req, res) => {
+    const { productId } = req.params;
+    const userId = req.user.id;
+
+    try {
+        const phone = await productService.dislike(productId, userId);
+        res.status(201).json(phone);
     } catch (error) {
         const errors = mapErrors(error);
         res.status(400).json({ message: errors });

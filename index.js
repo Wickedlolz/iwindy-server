@@ -12,6 +12,8 @@ async function init() {
     app.use(routes);
 
     app.listen(process.env.PORT, () =>
-        console.log('REST API is running on port: ' + process.env.PORT)
+        console.log(
+            '⚡️[server]: Server is running on port: ' + process.env.PORT
+        )
     );
 }

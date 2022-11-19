@@ -16,6 +16,7 @@ module.exports = function () {
             } catch (error) {
                 return res
                     .status(403)
+                    .clearCookie(process.env.COOKIE_NAME)
                     .json({ message: 'Invalid access token. Please sign in.' });
             }
         }
