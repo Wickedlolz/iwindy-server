@@ -1,44 +1,37 @@
 const User = require('../models/User');
 const Cart = require('../models/Cart');
-const jwt = require('jsonwebtoken');
-const { hash, compare } = require('bcrypt');
 
-exports.register = async function (email, password) {
-    const existing = await getUserByEmail(email);
+exports.getProfile = async function (userId) {
+    const user = await User.findById(userId).populate('myProducts');
 
-    if (existing) {
-        throw new Error('Email is taken');
-    }
+    const modifiedUser = {
+        cart: user.cart,
+        createdAt: user.createdAt,
+        email: user.email,
+        updatedAt: user.updatedAt,
+        _id: user._id,
+        myProducts: user.myProducts,
+        buyed: user.buyed,
+    };
 
-    const hashedPassword = await hash(
-        password,
-        Number(process.env.SALT_ROUNDS)
-    );
-
-    const user = new User({
-        email,
-        password: hashedPassword,
-    });
-
-    await user.save();
-
-    return user;
+    return modifiedUser;
 };
 
-exports.login = async function (email, password) {
-    const user = await getUserByEmail(email);
+exports.addToMyProducts = async function (userId, productId) {
+    const user = await User.findById(userId);
+    user.myProducts.push(productId);
+
+    await user.save();
+};
+
+exports.getCartItems = async function (userId) {
+    const user = await User.findById(userId).populate('cart').lean();
 
     if (!user) {
-        throw new Error('Incorect email or password!');
+        throw new Error('User not found');
     }
 
-    const isIdentical = await compare(password, user.password);
-
-    if (!isIdentical) {
-        throw new Error('Incorect email or password!');
-    }
-
-    return user;
+    return user.cart;
 };
 
 exports.addToCart = async function (userId, productId) {
@@ -58,41 +51,12 @@ exports.addToCart = async function (userId, productId) {
     return item;
 };
 
-exports.createToken = function (user) {
-    const tokenPromise = new Promise((resolve, reject) => {
-        const payload = {
-            email: user.email,
-            id: user._id,
-        };
+exports.makeOrder = async function (userId) {
+    const user = await User.findById(userId).populate('cart');
+    user.buyed.push(...user.cart);
+    user.cart.splice(0);
 
-        jwt.sign(
-            payload,
-            process.env.JWT_SECRET,
-            { expiresIn: '2d' },
-            (error, token) => {
-                if (error) {
-                    return reject(error);
-                }
+    await user.save();
 
-                resolve(token);
-            }
-        );
-    });
-
-    return tokenPromise;
-};
-
-exports.validateToken = function (token) {
-    return jwt.verify(token, process.env.JWT_SECRET, function (error, decoded) {
-        if (error) {
-            throw new Error(error.message);
-        }
-
-        return decoded;
-    });
-};
-
-async function getUserByEmail(email) {
-    const user = await User.findOne({ email: new RegExp(`^${email}$`, 'i') });
     return user;
-}
+};

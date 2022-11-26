@@ -1,4 +1,4 @@
-const { validateToken } = require('../services/user');
+const { validateToken } = require('../services/auth');
 
 module.exports = function () {
     return (req, res, next) => {

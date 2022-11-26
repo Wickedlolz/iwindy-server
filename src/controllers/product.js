@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const productService = require('../services/product');
+const userService = require('../services/user');
 const { mapErrors } = require('../utils/mapErrors');
 const { isAuth, isGuest } = require('../middlewares/guards');
 
@@ -50,6 +51,7 @@ router.post('/', async (req, res) => {
 
     try {
         const newProduct = await productService.create(data);
+        await userService.addToMyProducts(req.user.id, newProduct._id);
         res.json(newProduct);
     } catch (error) {
         const errors = mapErrors(error);

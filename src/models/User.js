@@ -20,6 +20,18 @@ const userSchema = new Schema(
                 ref: 'Cart',
             },
         ],
+        myProducts: [
+            {
+                type: ObjectId,
+                ref: 'Phone',
+            },
+        ],
+        buyed: [
+            {
+                type: ObjectId,
+                ref: 'Phone',
+            },
+        ],
     },
     { timestamps: true }
 );
