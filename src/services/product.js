@@ -16,7 +16,7 @@ exports.getById = async function (phoneId) {
 };
 
 exports.getLatest = async function () {
-    return await Phone.find({}).sort('-createdAt').limit(1).lean();
+    return await Phone.find({}).sort('-createdAt').limit(5).lean();
 };
 
 exports.create = async function (productData) {
