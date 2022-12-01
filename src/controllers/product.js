@@ -2,12 +2,20 @@ const router = require('express').Router();
 
 const productService = require('../services/product');
 const userService = require('../services/user');
+const commentService = require('../services/comment');
 const { mapErrors } = require('../utils/mapErrors');
 const { isAuth, isGuest } = require('../middlewares/guards');
 
 router.get('/', async (req, res) => {
+    const query = req.query.search;
+    const page = parseInt(req.query?.page) || 1;
+    const limit = 15;
+    const skipIndex = (page - 1) * limit;
+
     try {
-        const phones = await productService.getAll().lean();
+        const phones = await productService
+            .getAll(query, skipIndex, limit)
+            .lean();
         res.json(phones);
     } catch (error) {
         const errors = mapErrors(error);
@@ -148,6 +156,20 @@ router.post('/dislike/:productId', async (req, res) => {
     try {
         const phone = await productService.dislike(productId, userId);
         res.status(201).json(phone);
+    } catch (error) {
+        const errors = mapErrors(error);
+        res.status(400).json({ message: errors });
+    }
+});
+
+router.post('/comment', async (req, res) => {
+    const userId = req.user.id;
+    const { productId, content } = req.body;
+
+    try {
+        const comment = await commentService.create(userId, productId, content);
+        productService.addComment(productId, comment._id);
+        res.status(201).json(comment);
     } catch (error) {
         const errors = mapErrors(error);
         res.status(400).json({ message: errors });

@@ -1,7 +1,11 @@
 const Phone = require('../models/Phone');
 
-exports.getAll = function () {
-    return Phone.find({});
+exports.getAll = function (query, skipIndex, limit) {
+    const options = {
+        model: new RegExp(query, 'i'),
+    };
+
+    return Phone.find(options).skip(skipIndex).limit(limit);
 };
 
 exports.getAllByCategory = function (category) {
@@ -10,7 +14,7 @@ exports.getAllByCategory = function (category) {
 
 exports.getById = async function (phoneId) {
     return await Phone.findById(phoneId)
-        // .populate('comments')
+        .populate('comments')
         .populate('creator')
         .lean();
 };
