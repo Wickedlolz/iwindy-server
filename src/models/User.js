@@ -23,13 +23,13 @@ const userSchema = new Schema(
         myProducts: [
             {
                 type: ObjectId,
-                ref: 'Phone',
+                ref: 'Product',
             },
         ],
         buyed: [
             {
                 type: ObjectId,
-                ref: 'Phone',
+                ref: 'Product',
             },
         ],
     },

@@ -89,7 +89,6 @@ const phoneSchema = new Schema(
             ],
             default: 'other',
         },
-        comments: [{ type: ObjectId, ref: 'Comment' }],
         likes: [{ type: ObjectId, ref: 'User' }],
     },
     { timestamps: true }

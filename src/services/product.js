@@ -1,109 +1,84 @@
-const Phone = require('../models/Phone');
+const Product = require('../models/Product');
 
 exports.getAll = function (query, skipIndex, limit) {
     const options = {
-        model: new RegExp(query, 'i'),
+        name: new RegExp(query, 'i'),
     };
 
-    return Phone.find(options).skip(skipIndex).limit(limit);
+    return Product.find(options).skip(skipIndex).limit(limit);
 };
 
 exports.getAllByCategory = function (category) {
-    return Phone.find({ category });
+    return Product.find({ category }).limit(5);
 };
 
-exports.getById = async function (phoneId) {
-    return await Phone.findById(phoneId)
-        .populate('comments')
-        .populate('creator')
-        .lean();
+exports.getById = async function (productId) {
+    return await Product.findById(productId).populate('creator').lean();
 };
 
 exports.getLatest = async function () {
-    return await Phone.find({}).sort('-createdAt').limit(5).lean();
+    return await Product.find({}).sort('-createdAt').limit(5).lean();
 };
 
 exports.create = async function (productData) {
-    const phone = new Phone({
-        model: productData.model,
+    const product = new Product({
+        name: productData.name,
+        brand: productData.brand,
+        quantity: productData.quantity,
         price: productData.price,
-        released: productData.released,
-        weight: productData.weight,
-        os: productData.os,
-        memory: productData.memory,
-        displaySize: productData.displaySize,
-        displayResolutions: productData.displayResolutions,
-        cameraMP: productData.cameraMP,
-        cameraVideo: productData.cameraVideo,
-        ram: productData.ram,
-        chipset: productData.chipset,
-        batteryMAH: productData.batteryMAH,
-        batteryType: productData.batteryType,
+        discount: productData.discount,
+        description: productData.description,
         image: productData.image,
-        video: productData.video,
-        creator: productData.creator,
+        colors: productData.colors,
+        sizes: productData.sizes,
         category: productData.category,
+        creator: productData.creator,
     });
 
-    await phone.save();
-    return phone;
+    await product.save();
+    return product;
 };
 
 exports.updateById = async function (productId, productData) {
-    const phone = await Phone.findById(productId);
+    const product = await Product.findById(productId);
 
-    phone.model = productData.model;
-    phone.price = productData.price;
-    phone.released = productData.released;
-    phone.weigth = productData.weigth;
-    phone.os = productData.os;
-    phone.memory = productData.memory;
-    phone.displaySize = productData.displaySize;
-    phone.displayResolutions = productData.displayResolutions;
-    phone.cameraMP = productData.cameraMP;
-    phone.cameraVideo = productData.cameraVideo;
-    phone.ram = productData.ram;
-    phone.chipset = productData.chipset;
-    phone.batteryMAH = productData.batteryMAH;
-    phone.batteryType = productData.batteryType;
-    phone.image = productData.image;
-    phone.video = productData.video;
-    phone.category = productData.category;
+    product.name = productData.name;
+    product.quantity = productData.quantity;
+    product.price = productData.price;
+    product.description = productData.description;
+    product.image = productData.image;
+    product.colors = productData.colors;
+    product.sizes = productData.sizes;
+    product.category = productData.category;
+    product.brand = productData.brand;
+    product.discount = productData.discount;
 
-    await phone.save();
-    return phone;
+    await product.save();
+    return product;
 };
 
-exports.deleteById = async function (phoneId) {
-    const deletedPhone = await Phone.findByIdAndRemove(phoneId);
-    return deletedPhone;
+exports.deleteById = async function (productId) {
+    const deletedProduct = await Product.findByIdAndRemove(productId);
+    return deletedProduct;
 };
 
-exports.like = async function (phoneId, userId) {
-    const phone = await Phone.findById(phoneId);
+exports.like = async function (productId, userId) {
+    const product = await Product.findById(productId);
 
-    if (phone.likes.find((user) => user == userId)) {
-        throw new Error('User already like the phone!');
+    if (product.likes.find((user) => user == userId)) {
+        throw new Error('User already like this product!');
     }
 
-    phone.likes.push(userId);
-    await phone.save();
+    product.likes.push(userId);
+    await product.save();
 
-    return phone;
+    return product;
 };
 
-exports.dislike = async function (phoneId, userId) {
-    const phone = await Phone.findById(phoneId);
+exports.dislike = async function (productId, userId) {
+    const product = await Product.findById(productId);
 
-    phone.likes.pull(userId);
-    await phone.save();
-    return phone;
-};
-
-exports.addComment = async function (phoneId, commentId) {
-    const phone = await Phone.findById(phoneId);
-    phone.comments.push(commentId);
-    await phone.save();
-
-    return phone;
+    product.likes.pull(userId);
+    await product.save();
+    return product;
 };
