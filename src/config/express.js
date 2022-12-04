@@ -14,7 +14,7 @@ module.exports = (app) => {
     //         origin: whitelist,
     //     })
     // );
-    app.use(allowCors);
+    app.use(allowCors());
     app.use(cookieParser(process.env.COOKIE_SECRET));
     app.use(auth());
 };
