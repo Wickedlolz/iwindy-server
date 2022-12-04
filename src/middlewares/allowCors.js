@@ -14,7 +14,7 @@ module.exports = function () {
         );
         res.setHeader(
             'Access-Control-Allow-Headers',
-            'X-Authorization, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+            'x-authorization, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
         );
 
         next();
