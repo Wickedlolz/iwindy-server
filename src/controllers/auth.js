@@ -40,7 +40,11 @@ router.post(
                 _id: user._id,
             };
 
-            res.cookie(process.env.COOKIE_NAME, token, { httpOnly: true });
+            res.cookie(process.env.COOKIE_NAME, token, {
+                httpOnly: true,
+                sameSite: 'none',
+                secure: true,
+            });
             res.status(201).json(result);
         } catch (error) {
             const errors = mapErrors(error);
@@ -86,6 +90,7 @@ router.post(
             res.cookie(process.env.COOKIE_NAME, token, {
                 httpOnly: true,
                 sameSite: 'none',
+                secure: true,
             });
             res.status(200).json(result);
         } catch (error) {
