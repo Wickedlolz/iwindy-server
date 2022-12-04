@@ -1,7 +1,10 @@
 module.exports = function () {
     return (req, res, next) => {
         res.setHeader('Access-Control-Allow-Credentials', true);
-        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader(
+            'Access-Control-Allow-Origin',
+            'https://iwindy.vercel.app/, https://iwindy-server.vercel.app/'
+        );
         // another common pattern
         // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
         res.setHeader(
