@@ -1,10 +1,11 @@
+const whitelist = [
+    'https://iwindy.vercel.app/, https://iwindy-server.vercel.app/',
+];
+
 module.exports = function () {
     return (req, res, next) => {
         res.setHeader('Access-Control-Allow-Credentials', true);
-        res.setHeader(
-            'Access-Control-Allow-Origin',
-            'https://iwindy.vercel.app/, https://iwindy-server.vercel.app/'
-        );
+        res.setHeader('Access-Control-Allow-Origin', req.header('origin'));
         // another common pattern
         // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
         res.setHeader(
