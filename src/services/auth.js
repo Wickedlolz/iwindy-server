@@ -50,7 +50,7 @@ exports.createToken = function (user) {
         jwt.sign(
             payload,
             process.env.JWT_SECRET,
-            { expiresIn: '2d' },
+            { expiresIn: '1d' },
             (error, token) => {
                 if (error) {
                     return reject(error);
