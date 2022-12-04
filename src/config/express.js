@@ -7,7 +7,13 @@ const whitelist = ['http://localhost:4200'];
 
 module.exports = (app) => {
     app.use(express.json());
-    app.use(cors({ credentials: true, origin: whitelist }));
+    app.use(
+        cors({
+            origin: 'https://vercel.com/',
+            credentials: true,
+            origin: whitelist,
+        })
+    );
     app.use(cookieParser(process.env.COOKIE_SECRET));
     app.use(auth());
 };
