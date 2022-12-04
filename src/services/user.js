@@ -25,7 +25,15 @@ exports.addToMyProducts = async function (userId, productId) {
 };
 
 exports.getCartItems = async function (userId) {
-    const user = await User.findById(userId).populate('cart').lean();
+    const user = await User.findById(userId)
+        .populate({
+            path: 'cart',
+            populate: {
+                path: 'productId',
+                model: 'Product',
+            },
+        })
+        .lean();
 
     if (!user) {
         throw new Error('User not found');
@@ -34,14 +42,14 @@ exports.getCartItems = async function (userId) {
     return user.cart;
 };
 
-exports.addToCart = async function (userId, productId) {
+exports.addToCart = async function (userId, productId, quantity) {
     const user = await User.findById(userId);
 
     if (!user) {
         throw new Error('User not found!');
     }
 
-    const item = new Cart({ userId, productId });
+    const item = new Cart({ userId, productId, quantity });
     await item.save();
 
     user.cart.push(item);
@@ -51,8 +59,20 @@ exports.addToCart = async function (userId, productId) {
     return item;
 };
 
-exports.makeOrder = async function (userId) {
+exports.removeFromCart = async function (userId, productId) {
     const user = await User.findById(userId).populate('cart');
+    await Cart.findOneAndRemove({ productId });
+    const index = user.cart.findIndex((x) => x._id === productId);
+    user.cart.splice(index, 1);
+
+    await user.save();
+
+    return user;
+};
+
+exports.makeOrder = async function (userId, productId) {
+    const user = await User.findById(userId).populate('cart');
+    await Cart.findOneAndRemove({ productId });
     user.buyed.push(...user.cart);
     user.cart.splice(0);
 

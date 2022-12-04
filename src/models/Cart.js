@@ -12,7 +12,11 @@ const cartSchema = new Schema(
         },
         productId: {
             type: ObjectId,
-            ref: 'Phone',
+            ref: 'Product',
+        },
+        quantity: {
+            type: Number,
+            required: true,
         },
     },
     { timestamps: true }

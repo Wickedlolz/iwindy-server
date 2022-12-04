@@ -22,6 +22,7 @@ router.get('/cart', isAuth(), async (req, res) => {
 
     try {
         const cartItems = await userService.getCartItems(userId);
+
         res.json(cartItems);
     } catch (error) {
         const errors = mapErrors(error);
@@ -30,11 +31,11 @@ router.get('/cart', isAuth(), async (req, res) => {
 });
 
 router.post('/cart/add', isAuth(), async (req, res) => {
-    const { productId } = req.body;
+    const { productId, quantity } = req.body;
     const userId = req.user.id;
 
     try {
-        const item = await userService.addToCart(userId, productId);
+        const item = await userService.addToCart(userId, productId, quantity);
         res.status(201).json(item);
     } catch (error) {
         const errors = mapErrors(error);
@@ -42,11 +43,25 @@ router.post('/cart/add', isAuth(), async (req, res) => {
     }
 });
 
-router.post('/cart/order', isAuth(), async (req, res) => {
+router.delete('/cart/:productId', isAuth(), async (req, res) => {
+    const productId = req.params.productId;
     const userId = req.user.id;
 
     try {
-        const user = await userService.makeOrder(userId);
+        const removedItem = await userService.removeFromCart(userId, productId);
+        res.json(removedItem);
+    } catch (error) {
+        const errors = mapErrors(error);
+        res.status(400).json({ message: errors });
+    }
+});
+
+router.post('/cart/order/:productId', isAuth(), async (req, res) => {
+    const userId = req.user.id;
+    const productId = req.params.productId;
+
+    try {
+        const user = await userService.makeOrder(userId, productId);
         res.status(201).json(user);
     } catch (error) {
         const errors = mapErrors(error);
