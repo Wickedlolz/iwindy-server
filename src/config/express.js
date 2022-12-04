@@ -9,11 +9,10 @@ const whitelist = [
 ];
 
 module.exports = (app) => {
-    app.use(express.json());
-    app.use(
-        cors({
+    const corsOptions = function (req, callback, next) {
+        let options = {
+            origin: req.headers('origin'),
             credentials: true,
-            origin: whitelist,
             allowedHeaders: [
                 'x-authorization',
                 'X-CSRF-Token',
@@ -26,8 +25,13 @@ module.exports = (app) => {
                 'Date',
                 'X-Api-Version',
             ],
-        })
-    );
+        };
+
+        callback(null, options);
+    };
+
+    app.use(express.json());
+    app.use(cors(corsOptions));
     // app.use(allowCors());
     app.use(cookieParser(process.env.COOKIE_SECRET));
     app.use(auth());
