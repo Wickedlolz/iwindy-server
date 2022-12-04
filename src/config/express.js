@@ -9,7 +9,6 @@ module.exports = (app) => {
     app.use(express.json());
     app.use(
         cors({
-            origin: 'https://vercel.com/',
             credentials: true,
             origin: whitelist,
         })
