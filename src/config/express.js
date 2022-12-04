@@ -14,6 +14,18 @@ module.exports = (app) => {
         cors({
             credentials: true,
             origin: whitelist,
+            allowedHeaders: [
+                'x-authorization',
+                'X-CSRF-Token',
+                'X-Requested-With',
+                'Accept',
+                'Accept-Version',
+                'Content-Length',
+                'Content-MD5',
+                'Content-Type',
+                'Date',
+                'X-Api-Version',
+            ],
         })
     );
     // app.use(allowCors());
