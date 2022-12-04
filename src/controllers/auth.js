@@ -43,6 +43,7 @@ router.post(
             res.cookie(process.env.COOKIE_NAME, token, {
                 httpOnly: true,
                 sameSite: 'none',
+                secure: true,
             });
             res.status(201).json(result);
         } catch (error) {
@@ -89,6 +90,7 @@ router.post(
             res.cookie(process.env.COOKIE_NAME, token, {
                 httpOnly: true,
                 sameSite: 'none',
+                secure: true,
             });
             res.status(200).json(result);
         } catch (error) {
@@ -103,6 +105,7 @@ router.get('/logout', isAuth(), async (req, res) => {
     res.clearCookie(process.env.COOKIE_NAME, {
         httpOnly: true,
         sameSite: true,
+        secure: true,
     })
         .status(204)
         .json({ message: 'Successfully logged out.' });
