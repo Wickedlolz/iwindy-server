@@ -7,16 +7,18 @@ const { isAuth, isGuest } = require('../middlewares/guards');
 const { body, validationResult } = require('express-validator');
 
 router.get('/', async (req, res) => {
-    const query = req.query.search;
-    const page = parseInt(req.query?.page) || 1;
-    const limit = 15;
-    const skipIndex = (page - 1) * limit;
+    const query = req.query.name || '';
+    const limit = Number(req.query.limit) || Number.MAX_SAFE_INTEGER;
+
+    const startIndex = Number(req.query.startIndex) || 0;
 
     try {
-        const products = await productService
-            .getAll(query, skipIndex, limit)
-            .lean();
-        res.json(products);
+        const [results, totalResults] = await Promise.all([
+            productService.getAll(query, startIndex, limit),
+            productService.getAllProductsCount(query),
+        ]);
+
+        res.json({ results, totalResults });
     } catch (error) {
         const errors = mapErrors(error);
         res.status(400).json({ message: errors });

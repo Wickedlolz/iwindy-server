@@ -8,6 +8,12 @@ exports.getAll = function (query, skipIndex, limit) {
     return Product.find(options).skip(skipIndex).limit(limit);
 };
 
+exports.getAllProductsCount = async function (searchQuery) {
+    return Product.find({
+        name: { $regex: searchQuery, $options: 'i' },
+    }).countDocuments();
+};
+
 exports.getAllByCategory = function (category) {
     return Product.find({ category }).limit(5);
 };
