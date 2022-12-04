@@ -101,8 +101,8 @@ router.post(
 );
 
 router.get('/logout', isAuth(), async (req, res) => {
-    res.status(200)
-        .clearCookie(process.env.COOKIE_NAME)
+    res.clearCookie(process.env.COOKIE_NAME)
+        .status(204)
         .json({ message: 'Successfully logged out.' });
 });
 
