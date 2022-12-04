@@ -70,13 +70,13 @@ exports.removeFromCart = async function (userId, productId) {
     return user;
 };
 
-exports.makeOrder = async function (userId, productId) {
+exports.makeOrder = async function (userId) {
     const user = await User.findById(userId).populate('cart');
-    await Cart.findOneAndRemove({ productId });
+    await Cart.deleteMany({ userId });
     user.buyed.push(...user.cart);
     user.cart.splice(0);
 
     await user.save();
 
-    return user;
+    return user.cart;
 };

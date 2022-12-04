@@ -56,13 +56,12 @@ router.delete('/cart/:productId', isAuth(), async (req, res) => {
     }
 });
 
-router.post('/cart/order/:productId', isAuth(), async (req, res) => {
+router.post('/cart/order', isAuth(), async (req, res) => {
     const userId = req.user.id;
-    const productId = req.params.productId;
 
     try {
-        const user = await userService.makeOrder(userId, productId);
-        res.status(201).json(user);
+        const cartItems = await userService.makeOrder(userId);
+        res.status(201).json(cartItems);
     } catch (error) {
         const errors = mapErrors(error);
         res.status(400).json({ message: errors });
