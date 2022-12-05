@@ -101,7 +101,6 @@ router.post(
 );
 
 router.get('/logout', isAuth(), async (req, res) => {
-    const token = req.user.token;
     res.clearCookie(process.env.COOKIE_NAME, {
         httpOnly: true,
         secure: true,
