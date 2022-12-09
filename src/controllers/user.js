@@ -48,8 +48,8 @@ router.delete('/cart/:productId', isAuth(), async (req, res) => {
     const userId = req.user.id;
 
     try {
-        const removedItem = await userService.removeFromCart(userId, productId);
-        res.json(removedItem);
+        const user = await userService.removeFromCart(userId, productId);
+        res.json(user);
     } catch (error) {
         const errors = mapErrors(error);
         res.status(400).json({ message: errors });

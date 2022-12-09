@@ -60,18 +60,30 @@ exports.addToCart = async function (userId, productId, quantity) {
 };
 
 exports.removeFromCart = async function (userId, productId) {
-    const user = await User.findById(userId).populate('cart');
+    const user = await User.findById(userId).populate({
+        path: 'cart',
+        populate: {
+            path: 'productId',
+            model: 'Product',
+        },
+    });
+
     await Cart.findOneAndRemove({ productId });
     const index = user.cart.findIndex((x) => x._id === productId);
     user.cart.splice(index, 1);
-
     await user.save();
 
     return user;
 };
 
 exports.makeOrder = async function (userId) {
-    const user = await User.findById(userId).populate('cart');
+    const user = await User.findById(userId).populate({
+        path: 'cart',
+        populate: {
+            path: 'productId',
+            model: 'Product',
+        },
+    });
     await Cart.deleteMany({ userId });
     user.buyed.push(...user.cart);
     user.cart.splice(0);
