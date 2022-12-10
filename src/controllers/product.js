@@ -65,12 +65,7 @@ router.post(
         .bail()
         .isNumeric()
         .withMessage('Quantity must be a number!'),
-    body('price')
-        .notEmpty()
-        .withMessage('Price is required!')
-        .bail()
-        .isAlphanumeric()
-        .withMessage('Price must contains only letters and digits!'),
+    body('price').notEmpty().withMessage('Price is required!'),
     body('description')
         .notEmpty()
         .withMessage('Description is required!')
@@ -151,12 +146,7 @@ router.put(
         .bail()
         .isNumeric()
         .withMessage('Quantity must be a number!'),
-    body('price')
-        .notEmpty()
-        .withMessage('Price is required!')
-        .bail()
-        .isAlphanumeric()
-        .withMessage('Price must contains only letters and digits!'),
+    body('price').notEmpty().withMessage('Price is required!'),
     body('description')
         .notEmpty()
         .withMessage('Description is required!')
