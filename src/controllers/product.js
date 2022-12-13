@@ -208,10 +208,17 @@ router.delete('/:productId', isAuth(), async (req, res) => {
 
 router.get('/category/:category', async (req, res) => {
     const { category } = req.params;
+    const limit = Number(req.query.limit) || Number.MAX_SAFE_INTEGER;
+
+    const startIndex = Number(req.query.startIndex) || 0;
 
     try {
-        const products = await productService.getAllByCategory(category).lean();
-        res.json(products);
+        const [results, totalResults] = await Promise.all([
+            productService.getAllByCategory(category, startIndex, limit),
+            productService.getAllByCategoryCount(category),
+        ]);
+
+        res.json({ results, totalResults });
     } catch (error) {
         const errors = mapErrors(error);
         res.status(400).json({ message: errors });

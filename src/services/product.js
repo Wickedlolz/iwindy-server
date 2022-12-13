@@ -14,8 +14,12 @@ exports.getAllProductsCount = async function (searchQuery) {
     }).countDocuments();
 };
 
-exports.getAllByCategory = function (category) {
-    return Product.find({ category }).limit(5);
+exports.getAllByCategory = async function (category, skipIndex, limit) {
+    return Product.find({ category }).skip(skipIndex).limit(limit);
+};
+
+exports.getAllByCategoryCount = async function (category) {
+    return Product.find({ category }).countDocuments();
 };
 
 exports.getById = async function (productId) {
