@@ -13,7 +13,7 @@ async function init() {
 
     app.listen(process.env.PORT, () =>
         console.log(
-            '⚡️[server]: Server is running on port: ' + process.env.PORT
+            '⚡️ [server]: Server is running on port: ' + process.env.PORT
         )
     );
 }
