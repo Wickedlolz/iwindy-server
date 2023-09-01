@@ -22,6 +22,7 @@ iWindy REST API Server
 | POST        | Add to user cart              | /users/cart/add              | "productId": string, "quantity": number                                                                                                                                 | Yes            |
 | DELETE      | Delete product from user cart | /users/cart/:productId       |                                                                                                                                                                         | Yes            |
 | POST        | Make order                    | /users/cart/order            |                                                                                                                                                                         | Yes            |
+| POST        | Make payment with STRIPE      | /payment/pay                 | body with { amount: "amount of price here", token: "Stripe token from client side"}                                                                                     | No             |
 
 ## How to run:
 
